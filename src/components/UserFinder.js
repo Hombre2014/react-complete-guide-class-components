@@ -3,6 +3,7 @@ import { Fragment, useState, useEffect, Component } from 'react';
 import Users from './Users';
 import classes from './UserFinder.module.css';
 import UsersContext from '../store/users-context';
+import ErrorBoundary from './ErrorBoundary';
 
 class UserFinder extends Component {
   static contextType = UsersContext;
@@ -16,17 +17,19 @@ class UserFinder extends Component {
   }
 
   componentDidMount() {
-    // Send http request ...
+    // Send http request...
     this.setState({ filteredUsers: this.context.users });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.searchTerm !== this.state.searchTerm) {
       this.setState({
-        filteredUsers: this.context.users.filter((user) => user.name.includes(this.state.searchTerm)),
+        filteredUsers: this.context.users.filter((user) =>
+          user.name.includes(this.state.searchTerm)
+        ),
       });
-    };
-  };
+    }
+  }
 
   searchChangeHandler(event) {
     this.setState({ searchTerm: event.target.value });
@@ -35,13 +38,12 @@ class UserFinder extends Component {
   render() {
     return (
       <Fragment>
-        {/* One way of accessing the context is with Consumer method */}
-        {/* <UsersContext.Consumer> */}
         <div className={classes.finder}>
           <input type='search' onChange={this.searchChangeHandler.bind(this)} />
         </div>
-        <Users users={this.state.filteredUsers} />
-        {/* </UsersContext.Consumer> */}
+        <ErrorBoundary>
+          <Users users={this.state.filteredUsers} />
+        </ErrorBoundary>
       </Fragment>
     );
   }

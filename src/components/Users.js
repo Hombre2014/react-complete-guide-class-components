@@ -10,6 +10,7 @@ class Users extends Component {
       showUsers: true
     }; // Here the state is always an object with class based components and it has to be named state!
   }
+
   toggleUsersHandler() {
     this.setState((curState) => {
       return { showUsers: !curState.showUsers }; // It is a merge state it does not overwrite any other state elements if any

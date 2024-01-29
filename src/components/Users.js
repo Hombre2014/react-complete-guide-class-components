@@ -1,21 +1,34 @@
-import { useState, Component } from 'react';
-import User from './User';
+import { Component } from 'react';
 
+import User from './User';
 import classes from './Users.module.css';
 
 class Users extends Component {
   constructor() {
     super();
     this.state = {
-      showUsers: true
-    }; // Here the state is always an object with class based components and it has to be named state!
+      showUsers: true,
+      more: 'Test',
+    };
+  }
+
+  componentDidUpdate() {
+    // try {
+    //   someCodeWhichMightFail()
+    // } catch (err) {
+    //   // handle error
+    // }
+    if (this.props.users.length === 0) {
+      throw new Error('No users provided!');
+    }
   }
 
   toggleUsersHandler() {
+    // this.state.showUsers = false; // NOT!
     this.setState((curState) => {
-      return { showUsers: !curState.showUsers }; // It is a merge state it does not overwrite any other state elements if any
+      return { showUsers: !curState.showUsers };
     });
-  };
+  }
 
   render() {
     const usersList = (
